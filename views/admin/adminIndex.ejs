@@ -1,0 +1,16 @@
+
+<%- contentFor("title") %>
+Admin Panel
+
+<%- contentFor("content") %>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">Collection</div>
+  <div class="panel-body">
+    <ul>
+    <% for(i=0;i<collections.length;i++){ %>
+      <li class="well"><a href="/admin/collection?name=<%=collections[i]%>"><%= collections[i] %></a></li>
+    <% } %>
+    </ul>
+  </div>
+</div>

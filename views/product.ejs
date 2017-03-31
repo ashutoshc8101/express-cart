@@ -1,0 +1,29 @@
+<%- contentFor("title") %>
+<%= data.name %>
+
+<%- contentFor('content') %>
+
+<div class="col-md-4">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+    <%= data.name %>
+    </div>
+    <img src="<%= data.img %>" alt="Img - data.img" height="300" width="100%" />
+    <div class="panel-body">
+      <h1>Name: <%= data.name %></h1>
+      <h2>Price : $ <%= data.price %></h2>
+      <h3>Description: </h3><p class="lead">
+        <%= data.description %>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="col-md-8">
+  <div class="panel panel-primary">
+    <div class="panel-heading">Amount</div>
+    <div class="panel-body">
+      <div class="well">Price : $ <%= data.price %></div>
+      <a href="/addTOCart?id=<%= data._id %>" class="btn btn-warning">Add To Cart</a>
+    </div>
+  </div>
+</div>

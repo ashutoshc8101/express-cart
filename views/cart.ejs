@@ -1,0 +1,34 @@
+<%- contentFor('title') %>
+cart
+
+<%- contentFor("content") %>
+
+<div class="col-md-8">
+  <div class="panel panel-primary">
+    <div class="panel-heading">Cart Items</div>
+    <div class="panel-body">
+      <% if(items){ %>
+        <% for(i=0;i<items.length;i++){ %>
+          <div class="well"><%= items[i].item.name %>  <span class="badge"><%= items[i].qty %></span>
+            <div class="dropdown" style="float:right">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Dropdown
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <% var number = items[i].qty %>
+                  <% for(k=0;k<number;k++){ %>
+                      <li><a href="/chgQty?id=<%= items[i].item._id %>&newQty=<%= k %>">
+                        <% if(k === 0){ %>Remove Item <% }else{ %> <%= k %> <% } %></a></li>
+                  <% } %>
+                </ul>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <% } %>
+      <% }else{ %>
+        <div class="well">No items...</div>
+      <% } %>
+    </div>
+  </div>
+</div>
