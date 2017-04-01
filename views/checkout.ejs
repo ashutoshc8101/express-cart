@@ -1,0 +1,115 @@
+<%- contentFor('title') %>
+Checkout
+<%- contentFor('stylesheets') %>
+
+<%- contentFor('content') %>
+
+<div class="container-fluid"></div>
+<form action="/checkout" method="post" class="form-horizontal" id="form" name="userForm" >
+  <div class="row">
+    <div class="col-md-8">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Shipping Details</div>
+        <div class="panel-body">
+          <h1 align="center" style="font-size: 35px; margin:10px auto;margin-bottom:25px;">Shipping Details</h1>
+          <% if(errors){ %>
+            <% for(i=0;i<errors.length;i++){ %>
+              <div class="alert alert-danger"><%= errors[i].msg %></div>
+            <% } %>
+          <% } %>
+          <div class="form-group">
+            <label for="name" class="control-label col-md-2">Name:</label>
+            <div class="col-md-10">
+            <input type="text" class="form-control" name="name" placeholder="Someone" data-parsley-required data-parsley-focus="first" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email" class="control-label col-md-2">Email:</label>
+            <div class="col-md-10">
+            <input type="email" class="form-control" name="email" placeholder="Someone@domain.com" data-parsley-required data-parsley-type="email" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="telephone" class="control-label col-md-2">Contact Number:</label>
+            <div class="col-md-10">
+            <input type="number" class="form-control" name="telephone" placeholder="1234567890" data-parsley-required 	data-parsley-type="number" data-parsley-minlength="10" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address" class="control-label col-md-2">Address:</label>
+            <div class="col-md-10">
+            <input type="text" class="form-control" name="address" placeholder="House No. / Flat No." data-parsley-required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="City" class="control-label col-md-2">City:</label>
+            <div class="col-md-10">
+            <input type="text" class="form-control" name="City" placeholder="City Name" data-parsley-required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="state" class="control-label col-md-2">State:</label>
+            <div class="col-md-10">
+            <input type="text" class="form-control" name="state" placeholder="State Name" data-parsley-required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="postal" class="control-label col-md-2">Postal Code:</label>
+            <div class="col-md-10">
+            <input type="number" class="form-control" name="postal" placeholder="237843" data-parsley-required data-parsley-minlength="6" data-parsley-type="number" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="control-label col-md-2">Password:</label>
+            <div class="col-md-10">
+            <input type="password" class="form-control" id="password" name="password" placeholder="******" data-parsley-required data-parsley-length="[6, 20]" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cpassword" class="control-label col-md-2">Confirm Password:</label>
+            <div class="col-md-10">
+            <input type="password" class="form-control" name="cpassword" placeholder="******" data-parsley-required 	data-parsley-equalto="#password" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          Payment Overview
+        </div>
+        <div class="panel-body">
+          <div class="well">Total Items : <%= cart.totalqty %></div>
+          <div class="well">Total Price : $ <%= cart.totalPrice %></div>
+          <div class="well">Amount : $ <%= cart.totalPrice %></div>
+          <input type="submit" value="Pay" class="btn btn-success" style="display: block; width:40%; margin:5px auto;" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div id="payment-form"></div>
+  </div>
+</form>
+
+<%- contentFor('scripts') %>
+<script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
+<script src="/js/parsley.min.js" charset="utf-8"></script>
+<script>
+  $("#form").parsley({
+     errorsWrapper: '<ul class="alert alert-danger"></ul>',
+  });
+</script>
+<script>
+$.ajax({
+  type : "GET",
+  url : "/client_token",
+  success : function(token){
+    braintree.setup(token, "dropin", {
+      container: "payment-form"
+    });
+  }
+});
+
+</script>

@@ -23,7 +23,6 @@ module.exports = function Cart(oldcart){
 
     this.generateArray();
     var arrayItems = this.arr;
-    console.log(arrayItems);
     for(i=0;i<arrayItems.length;i++){
       this.totalPrice += arrayItems[i].item.price * arrayItems[i].qty ;
       this.totalqty += arrayItems[i].qty;

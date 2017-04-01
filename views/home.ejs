@@ -1,8 +1,12 @@
 <%- contentFor("title") %>
 Home
-
+<%- contentFor('stylesheets') %>
 <%- contentFor("content") %>
-
+<% if(message){ %>
+  <div class="alert alert-success">
+    <%= message %>
+  </div>
+<% } %>
 <% if(data){ %>
   <div class="row">
 <% for(i=0;i<data.length;i++){ %>
@@ -26,3 +30,5 @@ Home
   </div>
   </div>
 <% }%></div><% } %>
+
+<%- contentFor("scripts") %>

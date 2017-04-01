@@ -1,6 +1,6 @@
 <%- contentFor('title') %>
 cart
-
+<%- contentFor('stylesheets') %>
 <%- contentFor("content") %>
 
 <div class="col-md-7">
@@ -39,8 +39,10 @@ cart
     </div>
     <div class="panel-body">
       <div class="well">Total Items : <%= cart.totalqty %></div>
-      <div class="well">Total Price : <%= cart.totalPrice %></div>
-      <a href="/checkout" class="btn btn-success">Checkout</a>
+      <div class="well">Total Price : $ <%= cart.totalPrice %></div>
+      <a href="/checkout" class="btn btn-success <% if(cart.totalqty === 0){ %> disabled <% }%>">Checkout</a>
     </div>
   </div>
 </div>
+
+<%- contentFor("scripts") %>
