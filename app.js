@@ -11,9 +11,11 @@ const session = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const favicon = require("serve-favicon");
 const braintree= require("braintree");
+const bcrypt = require("bcryptjs");
 const expressValidator = require('express-validator');
 const product = require("./controllers/database.js")[0];
 const MongoConnection = require("./controllers/database.js")[1];
+const order = require("./controllers/database.js")[2];
 const adminRoute = require("./controllers/adminRoutes.js");
 
 // Configuring App //
@@ -43,13 +45,9 @@ app.use(favicon("./public/favicon.ico"));
 
 app.use("/admin", adminRoute);
 
-app.get("/test",function(req,res){
-  res.render("test");
-});
-
 // Intializing Controllers //
 
-require("./controllers/routes.js")(app, product, braintree);
+require("./controllers/routes.js")(app, product, braintree, order, bcrypt);
 
 // Listening Server //
 app.listen(app.get("port"), function(){

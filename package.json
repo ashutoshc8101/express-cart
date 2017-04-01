@@ -9,6 +9,7 @@
   "author": "dromestrome",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "braintree": "^2.0.2",
     "connect-mongo": "^1.3.2",
@@ -21,6 +22,8 @@
     "express-validator": "^3.1.2",
     "mongoose": "^4.9.2",
     "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "serve-favicon": "^2.4.2"
   },
   "devDependencies": {

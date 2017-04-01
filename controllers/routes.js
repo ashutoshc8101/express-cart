@@ -2,7 +2,7 @@
 
 const Cart = require("./Cart.js");
 
-module.exports = function(app, product, braintree){
+module.exports = function(app, product, braintree, order, bcrypt){
 
   var gateway = braintree.connect({
     environment:  braintree.Environment.Sandbox,
@@ -76,6 +76,7 @@ module.exports = function(app, product, braintree){
     pCart(req);
     var cart = req.session.cart ? req.session.cart : {};
     var am = cart.totalPrice;
+    var items = req.session.cart ? req.session.cart.arr : false;
     req.getValidationResult().then(function(result) {
       if(result.isEmpty()){
 
@@ -88,13 +89,35 @@ module.exports = function(app, product, braintree){
           }
         }, function (err, result) {
           if(err) throw err;
-          delete req.session.cart;
-          console.log(result);
-          res.redirect("/");
+          bcrypt.genSalt(10, function(err, salt) {
+          bcrypt.hash(req.body.password, salt, function(err, hash) {
+            var or = new order({
+              username : req.body.name,
+              email : req.body.email,
+              contact : req.body.telephone,
+              address : req.body.address,
+              city : req.body.City,
+              state : req.body.state,
+              postalCode : req.body.postal,
+              password : hash,
+              trasactionId : result.transaction.id,
+              amount : result.transaction.amount,
+              createdAt : result.transaction.createdAt,
+            });
+            or.save(function(err,data){
+              for(i=0;i<items.length;i++){
+              data.products.push(items[i].item._id);
+              }
+              data.save(function(err,data){
+                delete req.session.cart;
+                res.redirect("/");
+              });
+            });
+          });
+          });
         });
 
       }else{
-        var items = req.session.cart ? req.session.cart.arr : false;
         res.render("checkout", {"items" : items, "cart" : req.session.cart, "errors" : result.array(), "predata" : req.body});
       }
 

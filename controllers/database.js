@@ -15,6 +15,27 @@ var ProductSchema = mongoose.Schema({
   stock : Number
 });
 
+var productId = mongoose.Schema({
+  productId : mongoose.Schema.Types.ObjectId
+});
+
+var OrderSchema = mongoose.Schema({
+    username : String,
+    email : String,
+    contact : Number,
+    address : String,
+    city : String,
+    state : String,
+    postalCode : Number,
+    password : String,
+    trasactionId : String,
+    amount : Number,
+    createdAt : String,
+    products : [productId]
+});
+
+var order = mongoose.model("order", OrderSchema);
+
 var product = mongoose.model("product", ProductSchema);
 
-module.exports = [product , mongoose.connection];
+module.exports = [product , mongoose.connection, order];
