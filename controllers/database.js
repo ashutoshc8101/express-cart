@@ -17,4 +17,4 @@ var ProductSchema = mongoose.Schema({
 
 var product = mongoose.model("product", ProductSchema);
 
-module.exports = [product];
+module.exports = [product , mongoose.connection];

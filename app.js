@@ -6,8 +6,12 @@ const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const session = require("express-session");
+const MongoStore = require('connect-mongo')(session);
+const favicon = require("serve-favicon");
 const product = require("./controllers/database.js")[0];
+const MongoConnection = require("./controllers/database.js")[1];
 const adminRoute = require("./controllers/adminRoutes.js");
 
 // Configuring App //
@@ -18,12 +22,20 @@ app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(expressLayouts);
 app.use(morgan("dev"));
+app.use(cookieParser());
 app.use(session({
-  secret: 'keyboard cat',
+  secret: '45tgu8i7654eruhbgu',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: false, maxAge: 6000000}
+  cookie: { secure: false, maxAge: 600089000},
+   store: new MongoStore({
+     mongooseConnection : MongoConnection,
+     ttl: 14 * 24 * 60 * 60,
+     autoRemove: 'native',
+   })
 }));
+
+app.use(favicon("./public/favicon.ico"));
 
 app.use("/admin", adminRoute);
 

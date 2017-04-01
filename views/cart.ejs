@@ -3,13 +3,13 @@ cart
 
 <%- contentFor("content") %>
 
-<div class="col-md-8">
+<div class="col-md-7">
   <div class="panel panel-primary">
     <div class="panel-heading">Cart Items</div>
     <div class="panel-body">
-      <% if(items){ %>
+      <% if(items[0]){ %>
         <% for(i=0;i<items.length;i++){ %>
-          <div class="well"><%= items[i].item.name %>  <span class="badge"><%= items[i].qty %></span>
+          <div class="well"><a style="margin-right: 5px; font-size: 25px;" href="/product?id=<%= items[i].item._id %>"><%= items[i].item.name %></a><span class="badge"><%= items[i].qty %></span>
             <div class="dropdown" style="float:right">
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   Dropdown
@@ -29,6 +29,18 @@ cart
       <% }else{ %>
         <div class="well">No items...</div>
       <% } %>
+    </div>
+  </div>
+</div>
+<div class="col-md-5">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Total
+    </div>
+    <div class="panel-body">
+      <div class="well">Total Items : <%= cart.totalqty %></div>
+      <div class="well">Total Price : <%= cart.totalPrice %></div>
+      <a href="/checkout" class="btn btn-success">Checkout</a>
     </div>
   </div>
 </div>
