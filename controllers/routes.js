@@ -12,10 +12,7 @@ module.exports = function(app, product, braintree, order, bcrypt){
   });
 
   function pCart(req){
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
-    cart.generateArray();
-    cart.processCart();
-    req.session.cart = cart;
+
   }
 
   app.get("/", function(req,res){
@@ -43,7 +40,10 @@ module.exports = function(app, product, braintree, order, bcrypt){
   });
 
   app.get("/cart", function(req,res){
-    pCart(req);
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
+    cart.generateArray();
+    cart.processCart();
+    req.session.cart = cart;
     var items = req.session.cart ? req.session.cart.arr : false;
     res.render("cart", {"items" : items, "cart" : req.session.cart});
   });
@@ -73,7 +73,10 @@ module.exports = function(app, product, braintree, order, bcrypt){
 
   app.post("/checkout", function(req,res){
     require("./formValidation.js")(req);
-    pCart(req);
+    var kart = new Cart(req.session.cart ? req.session.cart : {});
+    kart.generateArray();
+    kart.processCart();
+    req.session.cart = kart;
     var cart = req.session.cart ? req.session.cart : {};
     var am = cart.totalPrice;
     var items = req.session.cart ? req.session.cart.arr : false;
@@ -106,9 +109,13 @@ module.exports = function(app, product, braintree, order, bcrypt){
             });
             or.save(function(err,data){
               for(i=0;i<items.length;i++){
-              data.products.push(items[i].item._id);
+              data.products.push({
+                item_id : items[i].item._id,
+                qty : items[i].qty
+              });
               }
               data.save(function(err,data){
+                if(err) throw err;
                 delete req.session.cart;
                 res.redirect("/");
               });

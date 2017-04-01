@@ -16,7 +16,8 @@ var ProductSchema = mongoose.Schema({
 });
 
 var productId = mongoose.Schema({
-  productId : mongoose.Schema.Types.ObjectId
+    item_id : mongoose.Schema.Types.ObjectId,
+    qty : Number
 });
 
 var OrderSchema = mongoose.Schema({
