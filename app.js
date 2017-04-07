@@ -4,6 +4,7 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -11,11 +12,18 @@ const session = require("express-session");
 const MongoStore = require('connect-mongo')(session);
 const favicon = require("serve-favicon");
 const braintree= require("braintree");
+const publicKey = dotenv.parsed.PUBLIC_KEY;
+const merchantId = dotenv.parsed.MERCHANT_ID;
+const privateKey = dotenv.parsed.PRIVATE_KEY;
 const bcrypt = require("bcryptjs");
 const expressValidator = require('express-validator');
+const passport = require("passport");
+const LocalStrategy = require('passport-local').Strategy;
+const flash = require("connect-flash");
 const product = require("./controllers/database.js")[0];
 const MongoConnection = require("./controllers/database.js")[1];
 const order = require("./controllers/database.js")[2];
+const User = require("./controllers/database.js")[3];
 const adminRoute = require("./controllers/adminRoutes.js");
 
 // Configuring App //
@@ -28,7 +36,7 @@ app.use(expressLayouts);
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(session({
-  secret: '45tgu8i7654eruhbgu',
+  secret: `${dotenv.parsed.SESSION_SECRET}`,
   resave: true,
   saveUninitialized: true,
   cookie: { secure: false, maxAge: 600089000},
@@ -42,12 +50,15 @@ app.use(session({
 app.use(expressValidator());
 
 app.use(favicon("./public/favicon.ico"));
-
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.use("/admin", adminRoute);
 
 // Intializing Controllers //
 
-require("./controllers/routes.js")(app, product, braintree, order, bcrypt);
+require("./controllers/routes.js")(app, product, braintree, order, bcrypt, merchantId, publicKey, privateKey);
+require("./controllers/authentication.js")(app, passport, User, LocalStrategy);
 
 // Listening Server //
 app.listen(app.get("port"), function(){

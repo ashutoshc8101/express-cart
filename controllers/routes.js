@@ -2,13 +2,13 @@
 
 const Cart = require("./Cart.js");
 
-module.exports = function(app, product, braintree, order, bcrypt){
+module.exports = function(app, product, braintree, order, bcrypt, merchantId, publicKey, privateKey){
 
   var gateway = braintree.connect({
     environment:  braintree.Environment.Sandbox,
-    merchantId:   'y4gcr9vq3y99mc9t',
-    publicKey:    'h2tmd3xmx5tgzr6c',
-    privateKey:   'e0ad3b3a3c8813bdedfba89d1f7ea835'
+    merchantId:   merchantId,
+    publicKey:    publicKey,
+    privateKey:   privateKey,
   });
 
   function pCart(req){
@@ -37,6 +37,14 @@ module.exports = function(app, product, braintree, order, bcrypt){
       req.session.cart = cart;
       res.redirect("/cart");
     });
+  });
+
+  app.get("/login", function(req,res){
+    res.render("auth/login", {"msg" : req.flash('signInErrors')});
+  });
+
+  app.get("/signup", function(req,res){
+    res.render("auth/signup", {"msg" : req.flash('signUpErrors')});
   });
 
   app.get("/cart", function(req,res){

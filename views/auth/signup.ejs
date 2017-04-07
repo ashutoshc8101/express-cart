@@ -1,0 +1,24 @@
+<%- contentFor("title") %>
+Login
+<%- contentFor('stylesheets') %>
+<%- contentFor('content') %>
+<div class="panel panel-primary">
+  <div class="panel-heading">Sign Up</div>
+  <div class="panel-body">
+    <form action="/signup" class="form-horizontal" method="post">
+      <div class="form-group">
+        <label for="username" class="control-label col-md-4">Username:</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="someone" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="control-label col-md-4">Username:</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="someone" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<%- contentFor("scripts") %>

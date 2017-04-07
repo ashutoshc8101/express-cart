@@ -1,7 +1,7 @@
 /* jshint esversion:6 */
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb://user:password@ds123410.mlab.com:23410/shopping-cart");
+const dotenv = require("dotenv").config();
+mongoose.connect(`${dotenv.parsed.CONNECTION_STRING}`);
 
 mongoose.connection.once("open",function(){
   console.log("Connected to MongoDb");
@@ -35,8 +35,22 @@ var OrderSchema = mongoose.Schema({
     products : [productId]
 });
 
+var UserSchema = mongoose.Schema({
+  username : String,
+  password : String,
+  email : String,
+  contact : Number,
+  address : String,
+  city : String,
+  state : String,
+  postalCode : Number,
+
+});
+
 var order = mongoose.model("order", OrderSchema);
 
 var product = mongoose.model("product", ProductSchema);
 
-module.exports = [product , mongoose.connection, order];
+var user = mongoose.model("user", UserSchema);
+
+module.exports = [product , mongoose.connection, order, user];
