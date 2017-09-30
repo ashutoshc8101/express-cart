@@ -139,4 +139,8 @@ module.exports = function(app, product, braintree, order, bcrypt, merchantId, pu
     });
   });
 
+  app.get("*", function(req, res){
+    res.send("NOT FOUND", 404);
+  });
+
 };
